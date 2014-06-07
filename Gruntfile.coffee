@@ -3,6 +3,8 @@
 module.exports = ( grunt ) ->
 
     grunt.initConfig
+        clean:
+            test: [ "test/fixtures" ]
         coffeelint:
             options:
                 arrow_spacing:
@@ -50,9 +52,10 @@ module.exports = ( grunt ) ->
                 tasks: [
                     "coffeelint"
                     "coffee"
-                    "nodeunit"
+                    "test"
                 ]
 
+    grunt.loadNpmTasks "grunt-contrib-clean"
     grunt.loadNpmTasks "grunt-contrib-nodeunit"
     grunt.loadNpmTasks "grunt-contrib-watch"
     grunt.loadNpmTasks "grunt-contrib-coffee"
@@ -61,6 +64,12 @@ module.exports = ( grunt ) ->
     grunt.registerTask "default", [
         "coffeelint"
         "coffee"
+        "clean"
+        "test"
+    ]
+
+    grunt.registerTask "test", [
+        "clean"
         "nodeunit"
     ]
 
