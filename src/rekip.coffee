@@ -8,6 +8,15 @@
 
 "use strict"
 
+http = require "http"
+fs = require "fs"
+path = require "path"
+mkdirp = require "mkdirp"
+
 module.exports = ( sURL, sDestination, fNext ) ->
-    console.log sURL, sDestination
-    fNext()
+    oRequest = http.get sURL, ( oResponse ) ->
+        mkdirp.sync path.dirname sDestination
+        ( oStream = fs.createWriteStream sDestination )
+            .on "finish", fNext
+        oResponse.pipe oStream
+    oRequest.on "error", fNext
